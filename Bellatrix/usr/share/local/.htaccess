@@ -1,0 +1,66 @@
+##
+# @name:       .htacceess
+# @author:     Karl Kuhrman
+# @abstract:   Default local web server settings for Bellatrix web application.
+# 
+# DO NOT MODIFY THIS FILE.
+# These are default web server settings for Bellatrix web application. 
+# If needed copy file to BTRX_DOCROOT (e.g. /var/www/htdocs) and make any
+# changes to copy there.
+#
+# @copyright:	Copyright (C) 2017 Kuhrman Technology Solutions LLC
+# @license:	GPLv3+: GNU GPL version 3
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+#
+# Set the default handler.
+#
+DirectoryIndex index.php
+ 
+#
+# Override default Apache handlers.
+#
+Options -Indexes
+Options +FollowSymLinks
+Options +MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  
+  #
+  # Block access to "hidden" directories whose names begin with a period.
+  # (This rule exists mainly to prevent access to Git files).
+  #
+  RewriteRule "(^|/)\." - [F]
+  
+  #
+  # If using an alias to access the site (e.g. http://localhost/polecat), 
+  # define the base below relative to the server document root. 
+  # (e.g. RewriteBase /polecat)
+  #
+  # RewriteBase /AblePolecat-View
+  
+  #
+  # Pass all requests not referring directly to files in the file system to
+  # index.php.
+  #
+  RewriteCond %{REQUEST_FILENAME} !(.*)\.(js|ico|gif|jpg|png|css|eot|ttf|woff|html)$
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteRule ^ index.php [L]
+</IfModule>
+
