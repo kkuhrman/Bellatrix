@@ -1,11 +1,11 @@
 <?php
 /**
- * @name:       index.php
+ * @name:       Subject.php
  * @author:     Karl Kuhrman
- * @abstract:   Bellatrix web application main point of entry.
+ * @abstract:   Declare Btrx_AccessControl_SubjectInterface.
  *
- * All requests are routed trhough index.php
- *
+ * 'Subject' (agent or role) seeks access to 'Object' (resource).
+ * 
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
  *
@@ -23,14 +23,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Application configuration settings.
- */
-require_once('config.php');
+require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_INCLUDE, 'AccessControl', 'Article', 'Dynamic.php')));
 
+interface Btrx_AccessControl_SubjectInterface extends Btrx_AccessControl_Article_DynamicInterface
+{
+}
 
-/**
- * Route HTTP request.
- */
-require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();

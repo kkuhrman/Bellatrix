@@ -1,10 +1,10 @@
 <?php
 /**
- * @name:       index.php
+ * @name:       Command.php
  * @author:     Karl Kuhrman
- * @abstract:   Bellatrix web application main point of entry.
+ * @abstract:   Declare Btrx_Exception_CommandInterface.
  *
- * All requests are routed trhough index.php
+ * Exceptions thrown by Able Polecat commands, invokers and targets.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -23,14 +23,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Application configuration settings.
- */
-require_once('config.php');
+require_once(BTRX_INCLUDE . DIRECTORY_SEPARATOR . 'Exception.php');
 
+interface Btrx_Exception_CommandInterface extends Btrx_ExceptionInterface
+{
+}
 
-/**
- * Route HTTP request.
- */
-require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();

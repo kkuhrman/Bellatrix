@@ -8,7 +8,7 @@
 # If needed copy file to BTRX_DOCROOT (e.g. /var/www/htdocs) and make any
 # changes to copy there.
 #
-# @copyright:	Copyright (C) 2017 Kuhrman Technology Solutions LLC
+# @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
 # @license:	GPLv3+: GNU GPL version 3
 #
 # This program is free software: you can redistribute it and/or modify
@@ -47,11 +47,11 @@ Options +MultiViews
   RewriteRule "(^|/)\." - [F]
   
   #
-  # If using an alias to access the site (e.g. http://localhost/polecat), 
+  # If using an alias to access the site (e.g. http://localhost/Bellatrix), 
   # define the base below relative to the server document root. 
-  # (e.g. RewriteBase /polecat)
+  # (e.g. RewriteBase /Bellatrix)
   #
-  # RewriteBase /AblePolecat-View
+  # RewriteBase /Bellatrix
   
   #
   # Pass all requests not referring directly to files in the file system to

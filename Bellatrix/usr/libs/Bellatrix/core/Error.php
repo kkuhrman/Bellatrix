@@ -1,10 +1,10 @@
 <?php
 /**
- * @name:       index.php
+ * @name:       Error.php
  * @author:     Karl Kuhrman
- * @abstract:   Bellatrix web application main point of entry.
+ * @abstract:   Default implemenation of Btrx_ErrorInterface.
  *
- * All requests are routed trhough index.php
+ * Default PHP error handling.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -23,14 +23,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Application configuration settings.
- */
-require_once('config.php');
+require_once(BTRX_INCLUDE . DIRECTORY_SEPARATOR . 'Error.php');
 
+class Btrx_Error implements Btrx_ErrorInterface
+{
+    //
+    // Implement Btrx_ErrorInterface
+    //
+    public function recover($errno, $errstr, $errfile = NULL, $errline = NULL, $errcontext = NULL) {
+        //
+        // This boolean flag indicates whether error condition is recoverable
+        //
+        $recovered = (($errno == E_ERROR) || ($errno == E_USER_ERROR));
+        
+        //
+        // Unpack error data
+        //
+        
+        //
+        // Log error information
+        //
+        
+        //
+        // Notify if error condition is recoverable
+        //
+        return $recovered;
+    }
+}
 
-/**
- * Route HTTP request.
- */
-require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();

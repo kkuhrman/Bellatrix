@@ -1,6 +1,6 @@
 var/www/htdocs/.htaccess
-usr/etc
-usr/mod
-usr/lib
+usr/local/etc
+usr/local/src
+usr/local/lib
 var/log
 var/theme/default/user

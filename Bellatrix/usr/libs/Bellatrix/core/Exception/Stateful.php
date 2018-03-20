@@ -1,10 +1,10 @@
 <?php
 /**
- * @name:       index.php
+ * @name:       Stateful.php
  * @author:     Karl Kuhrman
- * @abstract:   Bellatrix web application main point of entry.
+ * @abstract:   Default implementation of Btrx_Exception_StatefulInterface.
  *
- * All requests are routed trhough index.php
+ * Exceptions thrown by classes implmenting Btrx_StatefulInterface.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -23,14 +23,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Application configuration settings.
- */
-require_once('config.php');
+require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_INCLUDE, 'Exception', 'Stateful.php')));
+require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Exception.php');
 
+class Btrx_Exception_Stateful 
+    extends Btrx_ExceptionAbstract 
+    implements Btrx_Exception_StatefulInterface
+{
+    //
+    // Implement Btrx_Exception_Interface
+    //
+    public static function recover(Exception $Exception) {
+        return parent::recover($Exception);
+    }
+}
 
-/**
- * Route HTTP request.
- */
-require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();

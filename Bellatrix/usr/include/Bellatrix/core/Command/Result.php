@@ -1,10 +1,10 @@
 <?php
 /**
- * @name:       index.php
+ * @name:       Command.php
  * @author:     Karl Kuhrman
- * @abstract:   Bellatrix web application main point of entry.
+ * @abstract:   Declare Btrx_Command_ResultInterface.
  *
- * All requests are routed trhough index.php
+ * Encapsulates success/failure status of command execution and return result.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -23,14 +23,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Application configuration settings.
- */
-require_once('config.php');
+interface Btrx_Command_ResultInterface
+{
+    /**
+     * Invocation of command resulted in no error condition.
+     */
+    const BTRX_CMD_INVOKE_SUCCESS = 0x0000;
+    
+    /**
+     * Invocation of command resulted in error condition.
+     */
+    const BTRX_CMD_INVOKE_ERROR = 0x0001;
+    
+    /**
+     * @return integer One of the invocation result codes above.
+     */
+    public function getResult();
+    
+    /**
+     * @return mixed Return result data.
+     */
+    public function getValue();
+}
 
-
-/**
- * Route HTTP request.
- */
-require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();

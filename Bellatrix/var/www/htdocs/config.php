@@ -14,7 +14,7 @@
  * error message on any condition, which violates Bellatrix configuration 
  * rules.
  * 
- * @copyright:	Copyright (C) 2017 Kuhrman Technology Solutions LLC
+ * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,11 +86,11 @@ if (!defined('BTRX_ETC')) {
 
 /**
  * Secondary directory hierarchy may contain the following sub-directories:
- * ./etc - project configuration files modified for local environment
- * ./mod - Bellatrix modules
- * ./lib - class libraries, which are not packaged as Bellatrix modules
+ * ./local/etc - project configuration files modified for local environment
+ * ./local/include - Declaration of user extension interfaces
+ * ./local/src - Implementation of user extension interfaces
+ * ./local/lib - class libraries, which are not packaged as Bellatrix modules
  * ./share - documentation, examples, SQL, utility scripts etc.
- * ./src - project source files
  */
 if (!defined('BTRX_USR')) {
     global $BTRX_USR;
@@ -98,6 +98,7 @@ if (!defined('BTRX_USR')) {
     define('BTRX_USR', $BTRX_USR);
     $BTRX_LOCAL_PROJECT_CONF_FILE_PATH_PARTS = array(
         BTRX_USR,
+        'local',
         'etc',
         'Bellatrix',
         'conf',
@@ -202,7 +203,7 @@ if (!defined('BTRX_VAR')) {
  * always go with the latter file, if it exists; otherwise, it will use the
  * master (former).
  */
-$localPathConf = implode(DIRECTORY_SEPARATOR, array(BTRX_USR, 'etc', 'Bellatrix', 'conf', 'config.php'));
+$localPathConf = implode(DIRECTORY_SEPARATOR, array(BTRX_USR, 'local', 'etc', 'Bellatrix', 'conf', 'config.php'));
 if (file_exists($localPathConf)) {
     include_once($localPathConf);
 }
@@ -223,12 +224,20 @@ else {
         }
         
         /**
+         * Location of Bellatrix core class library interface definitions.
+         */
+        if (!defined('BTRX_INCLUDE')) {
+            global $BTRX_INCLUDE;
+            !isset($BTRX_INCLUDE) ? $BTRX_INCLUDE = implode(DIRECTORY_SEPARATOR, array(BTRX_USR, 'include', 'Bellatrix', 'core')) : NULL;
+            define('BTRX_INCLUDE', $BTRX_INCLUDE);
+        }
+        
+        /**
          * Location of Bellatrix core class library.
          * Override this definition if you intend to locate the core class library
          * anywhere other than BTRX_ROOT/core.
          *
-         * Best practice is to clone Bellatrix (and other class libraries) in
-         * ./project/usr/libs/
+         * Best practice is to clone Bellatrix in [project]/usr/libs/
          */
         if (!defined('BTRX_CORE')) {
             global $BTRX_CORE;
@@ -255,6 +264,20 @@ if (!defined('BTRX_BOOT_LOG')) {
     global $BTRX_BOOT_LOG;
     $BTRX_BOOT_LOG = FALSE;
     define('BTRX_BOOT_LOG', $BTRX_BOOT_LOG);
+}
+
+/**
+ * Check location of Bellatrix core class library interface definitions.
+ */
+if (!defined('BTRX_INCLUDE')) {
+    $msg = sprintf("Location of core class library interface definitions is not defined.");
+    $BTRX_CONFIGURATION['error']['Bellatrix core class library interface definitions'] = $msg;
+}
+else {
+    if (!file_exists(BTRX_INCLUDE)) {
+        $msg = sprintf("Core class library interface definitions path is not accessible: %s.", BTRX_INCLUDE);
+        $BTRX_CONFIGURATION['error']['Bellatrix core class library interface definitions'] = $msg;
+    }
 }
 
 /**

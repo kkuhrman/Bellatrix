@@ -1,10 +1,10 @@
 <?php
 /**
- * @name:       index.php
+ * @name:       Exception.php
  * @author:     Karl Kuhrman
- * @abstract:   Bellatrix web application main point of entry.
+ * @abstract:   Declare Btrx_ExceptionInterface.
  *
- * All requests are routed trhough index.php
+ * Encapsulates default PHP exception handling.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -23,14 +23,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Application configuration settings.
- */
-require_once('config.php');
-
-
-/**
- * Route HTTP request.
- */
-require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();
+interface Btrx_ExceptionInterface {
+    /**
+     * @see set_exception_handler()
+     * @param Exception $Exception
+     */
+    public static function recover(Exception $Exception);
+}
