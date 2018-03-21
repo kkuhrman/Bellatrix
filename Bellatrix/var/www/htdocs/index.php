@@ -33,4 +33,4 @@ require_once('config.php');
  * Route HTTP request.
  */
 require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Application.php');
-Btrx_Application::wakeup();
+Btrx_Application::wakeup()->getResponse()->toString();

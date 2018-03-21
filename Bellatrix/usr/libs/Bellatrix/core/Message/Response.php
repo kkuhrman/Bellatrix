@@ -1,10 +1,8 @@
 <?php
 /**
- * @name:       Error.php
+ * @name:       Response.php
  * @author:     Karl Kuhrman
- * @abstract:   Default implemenation of Btrx_ErrorInterface.
- *
- * Default PHP error handling.
+ * @abstract:   Default implementation of Btrx_Message_ResponseInterface.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -22,32 +20,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+require_once (implode(DIRECTORY_SEPARATOR, array(BTRX_INCLUDE, 'Message', 'Response.php')));
+require_once (implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Exception', 'Message.php')));
 
-require_once(BTRX_INCLUDE . DIRECTORY_SEPARATOR . 'Error.php');
-
-class Btrx_Error implements Btrx_ErrorInterface
+class Btrx_Message_Response implements Btrx_Message_ResponseInterface
 {
     //
-    // Implement Btrx_ErrorInterface
+    // Implement Btrx_MessageInterface
     //
-    public static function recover($errno, $errstr, $errfile = NULL, $errline = NULL, $errcontext = NULL) {
-        //
-        // This boolean flag indicates whether error condition is recoverable
-        //
-        $recovered = (($errno == E_ERROR) || ($errno == E_USER_ERROR));
-        
-        //
-        // Unpack error data
-        //
-        
-        //
-        // Log error information
-        //
-        
-        //
-        // Notify if error condition is recoverable
-        //
-        return $recovered;
+    public function toString()
+    {
+        $msg = sprintf("Message body is empty. %s not implemented.", __CLASS__);
+        print($msg);
     }
 }
 

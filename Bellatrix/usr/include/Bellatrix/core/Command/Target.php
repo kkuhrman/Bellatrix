@@ -13,10 +13,12 @@
  * use forward and reverse link to describe the relationship between superior to 
  * subordinate, and subordinate to superior respectively.
  *
- * The intended work flow of this method is subordinate calls on superior, passing
- * self as parameter. If approved to be next in COR, superior returns reference to
- * itself, which subordinate must save as reverse link. Otherwise, if link is not
- * permitted, an exception is thrown and the whole thing fails.
+ * The linking mechanism is expected to work thus:
+ * 1. Superior calls link() on subordinate and attempts to set self as superior
+ * 2. Subordinate is responsible for accepting or declining call to link()
+ * 3. If subordinate accepts position in CoR by way of link it sets itself as
+ *    subordinate by calling superior->setSubordinate(self).
+ * 4. If subordinate declines position in CoR it is expected to throw exception
  * 
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -60,10 +62,17 @@ interface Btrx_Command_TargetInterface
     public function execute(Btrx_CommandInterface $Command);
     
     /**
-     * Allows potential subordinate targets to link to a superior.
+     * Superior calls this method on subordinate to establish link.
      * @param Btrx_Command_TargetInterface $Target
      * @throws Btrx_Exception_CommandInterface
      */
     public function link(Btrx_Command_TargetInterface $Target);
+    
+    /**
+     * Subordinate calls this method on superrior in link assuming all goes well.
+     * @param Btrx_Command_TargetInterface $Target
+     * @throws Btrx_Exception_CommandInterface
+     */
+    public function setSubordinate(Btrx_Command_TargetInterface $Target);
 }
 

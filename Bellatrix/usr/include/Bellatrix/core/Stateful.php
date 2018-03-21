@@ -57,6 +57,12 @@ interface Btrx_StatefulInterface
      *   //@todo: log the exception
      * }
      * @example
+     * 
+     * The Subject parameter is optional but should be saved as the Command
+     * Invoker member if passed. In the case of Resource classes, the
+     * Subject should likely be an access control agent (so commands such as 
+     * Open are filtered through a set of AC privileges) and so on.
+     * 
      * @param Btrx_AccessControl_SubjectInterface $Subject
      * @throws Btrx_Exception_StatefulInterface
      */

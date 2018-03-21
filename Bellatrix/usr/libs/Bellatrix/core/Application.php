@@ -22,6 +22,8 @@
  */
 
 require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Command', 'Target.php')));
+require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Exception', 'Command.php')));
+require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Message', 'Response.php')));
 
 class Btrx_Application 
     extends Btrx_Command_TargetAbstract
@@ -37,6 +39,18 @@ class Btrx_Application
      * @var string Common name.
      */
     const NAME = 'Btrx_Application';
+    
+    /**
+     * 
+     * @var Btrx_Application Instance of concrete singleton.
+     */
+    private static $App;
+    
+    /**
+     * 
+     * @var Btrx_Message_ResponseInterface
+     */
+    private $Response;
     
     //
     // Implement Btrx_AccessControl_ArticleInterface
@@ -60,22 +74,102 @@ class Btrx_Application
     // Implement Btrx_StatefulInterface
     //
     public function sleep(Btrx_AccessControl_SubjectInterface $Subject = NULL) {
-        
+        //
+        // Flush output buffer.
+        //
+        ob_end_flush();
     }
     
     public static function wakeup(Btrx_AccessControl_SubjectInterface $Subject = NULL) {
-        die("Bellatrix is in the initial stage of development.");
+        if (!isset(self::$App))
+        {
+            //
+            // Create singleton
+            //
+            self::$App = new Btrx_Application();
+                        
+            // @todo:
+            // try {
+            //   Btrx_Mode_Server::wakeup(NULL)->link(self::$App);
+            //   if successful subordinate mode will call parent::setSubordinate(self)
+            // }
+            // catch (Btrx_Exception) {...}
+            
+            //
+            // ...
+            //
+            
+            //
+            // @todo: JUNK This should be last step for web app. Router mode should return response.
+            //
+            self::$App->Response = new Btrx_Message_Response();
+            
+        }
+        return self::$App;
     }
 
     //
     // Implement Btrx_Command_TargetInterface
     //
     public function link(Btrx_Command_TargetInterface $Target) {
-        
+        $msg = sprintf("%s must be root in chain of responsibility. Cannot link to %s",
+            __CLASS__, self::getDataTypeName($Target));
+        throw new Btrx_Exception_Command($msg);
     }
 
     public function execute(Btrx_CommandInterface $Command) {
         
+    }
+    
+    //
+    // @todo: extract interface from these
+    //
+    /**
+     * @return Btrx_Message_ResponseInterface
+     */
+    public function getResponse() {
+        return self::$App->Response;
+    }
+    
+    //
+    // Helper functions
+    //
+
+    //
+    // Given a variable, return name of primitive type or class name if object..
+    //
+    public static function getDataTypeName($variable = NULL) {
+        
+        $typeName = 'null';
+        
+        if (isset($variable)) {
+            $typeName = @gettype($variable);
+            if ($typeName === 'object') {
+                $typeName = @get_class($variable);
+            }
+        }
+        return $typeName;
+    }
+    
+    //
+    // Inherited functions
+    //
+    
+    /**
+     * {@inheritDoc}
+     * @see Btrx_StatefulAbstract::initialize()
+     */
+    protected function initialize()
+    {
+        //
+        // Btrx_Command_TargetAbstract::initialize()
+        //
+        parent::initialize();
+        
+        //
+        // Turn on output buffering.
+        //
+        ob_start();
     }
 }
 

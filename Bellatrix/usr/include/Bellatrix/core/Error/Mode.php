@@ -1,8 +1,8 @@
 <?php
 /**
- * @name:       Error.php
+ * @name:       Mode.php
  * @author:     Karl Kuhrman
- * @abstract:   Default implemenation of Btrx_ErrorInterface.
+ * @abstract:   Declare Btrx_Error_ModeInterface.
  *
  * Default PHP error handling.
  *
@@ -25,29 +25,7 @@
 
 require_once(BTRX_INCLUDE . DIRECTORY_SEPARATOR . 'Error.php');
 
-class Btrx_Error implements Btrx_ErrorInterface
+interface Btrx_Error_ModeInterface extends Btrx_ErrorInterface
 {
-    //
-    // Implement Btrx_ErrorInterface
-    //
-    public static function recover($errno, $errstr, $errfile = NULL, $errline = NULL, $errcontext = NULL) {
-        //
-        // This boolean flag indicates whether error condition is recoverable
-        //
-        $recovered = (($errno == E_ERROR) || ($errno == E_USER_ERROR));
-        
-        //
-        // Unpack error data
-        //
-        
-        //
-        // Log error information
-        //
-        
-        //
-        // Notify if error condition is recoverable
-        //
-        return $recovered;
-    }
 }
 

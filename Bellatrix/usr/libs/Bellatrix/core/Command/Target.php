@@ -40,6 +40,19 @@ abstract class Btrx_Command_TargetAbstract
      */
     private $Subordinate;
     
+    //
+    // Implement Btrx_Command_TargetInterface
+    // 
+    
+    /**
+     * Subordinate calls this method on superrior in link assuming all goes well.
+     * @param Btrx_Command_TargetInterface $Target
+     * @throws Btrx_Exception_CommandInterface
+     */
+    public function setSubordinate(Btrx_Command_TargetInterface $Target) {
+        $this->Superior = $Target;   
+    }
+    
     /**
      * {@inheritDoc}
      * @see Btrx_StatefulAbstract::initialize()

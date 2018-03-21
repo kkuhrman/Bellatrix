@@ -1,10 +1,8 @@
 <?php
 /**
- * @name:       Error.php
+ * @name:       Message.php
  * @author:     Karl Kuhrman
- * @abstract:   Default implemenation of Btrx_ErrorInterface.
- *
- * Default PHP error handling.
+ * @abstract:   Default implementation of Btrx_Exception_MessageInterface.
  *
  * @copyright:	Copyright (C) 2018 Kuhrman Technology Solutions LLC
  * @license:	GPLv3+: GNU GPL version 3
@@ -23,31 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(BTRX_INCLUDE . DIRECTORY_SEPARATOR . 'Error.php');
+require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_INCLUDE, 'Exception', 'Message.php')));
+require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Exception.php');
 
-class Btrx_Error implements Btrx_ErrorInterface
+class Btrx_Exception_Message implements Btrx_Exception_MessageInterface
 {
     //
-    // Implement Btrx_ErrorInterface
+    // Implement Btrx_Exception_Interface
     //
-    public static function recover($errno, $errstr, $errfile = NULL, $errline = NULL, $errcontext = NULL) {
-        //
-        // This boolean flag indicates whether error condition is recoverable
-        //
-        $recovered = (($errno == E_ERROR) || ($errno == E_USER_ERROR));
-        
-        //
-        // Unpack error data
-        //
-        
-        //
-        // Log error information
-        //
-        
-        //
-        // Notify if error condition is recoverable
-        //
-        return $recovered;
+    public static function recover(Exception $Exception) {
+        return parent::recover($Exception);
     }
 }
 
