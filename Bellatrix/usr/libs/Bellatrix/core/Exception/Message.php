@@ -24,13 +24,9 @@
 require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_INCLUDE, 'Exception', 'Message.php')));
 require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Exception.php');
 
-class Btrx_Exception_Message implements Btrx_Exception_MessageInterface
+class Btrx_Exception_Message 
+    extends Btrx_Exception
+    implements Btrx_Exception_MessageInterface
 {
-    //
-    // Implement Btrx_Exception_Interface
-    //
-    public static function recover(Exception $Exception) {
-        return parent::recover($Exception);
-    }
 }
 

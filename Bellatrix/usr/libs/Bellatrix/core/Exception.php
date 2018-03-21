@@ -25,14 +25,25 @@
 
 require_once(BTRX_INCLUDE . DIRECTORY_SEPARATOR . 'Exception.php');
 
-abstract class Btrx_ExceptionAbstract implements Btrx_ExceptionInterface
+class Btrx_Exception implements Btrx_ExceptionInterface
 {
     //
     // Implement Btrx_ExceptionInterface
     //
     public static function recover(Exception $Exception) {
         //
-        // Log exception data
+        // Get exception data
+        //
+        $errorFile = str_replace("\\", "\\\\", $Exception->getFile());
+        $errorLine = $Exception->getLine();
+        $errorMessage = $Exception->getMessage();
+
+        //
+        // @todo: Log exception to database.
+        //
+        
+        //
+        // @todo: determine recovery status
         //
         
         //

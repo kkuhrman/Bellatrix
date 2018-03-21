@@ -43,6 +43,12 @@ extends Btrx_Command_TargetAbstract
      */
     const NAME = 'Btrx_Mode_Server';
     
+    /**
+     * 
+     * @var Btrx_Mode_Server concrete instance of singleton.
+     */
+    private static $Server;
+    
     //
     // Implement Btrx_AccessControl_ArticleInterface
     //
@@ -64,19 +70,31 @@ extends Btrx_Command_TargetAbstract
     //
     // Implement Btrx_StatefulInterface
     //
-    public function sleep(Btrx_AccessControl_ArticleInterface $Article = NULL) {
+    public function sleep(Btrx_AccessControl_SubjectInterface $Subject = NULL) {
         
     }
 
-    public function wakeup(Btrx_AccessControl_ArticleInterface $Article = NULL) {
-        
+    public static function wakeup(Btrx_AccessControl_SubjectInterface $Subject = NULL) {
+        if (!isset(self::$Server))
+        {
+            self::$Server = new Btrx_Mode_Server();
+        }
+        return self::$Server;
     }
 
     //
     // Implement Btrx_Command_TargetInterface
     //
     public function link(Btrx_Command_TargetInterface $Target) {
-        
+        if (isset($Target) && is_a($Target, 'Btrx_Application'))
+        {
+            $this->setSuperior($Target);
+            $Target->setSubordinate($this);
+            return $this;
+        }
+        $msg = sprintf("%s is not permitted to link to %s",
+            self::getDataTypeName($Target), __CLASS__);
+        throw new Btrx_Exception_Command($msg);
     }
 
     public function execute(Btrx_CommandInterface $Command) {
@@ -108,6 +126,8 @@ extends Btrx_Command_TargetAbstract
         //
         // Initialize error and exception handling
         //
+        set_error_handler(array('Btrx_Error', 'recover'));
+        set_exception_handler(array('Btrx_Exception', 'recover'));
     }
 }
 

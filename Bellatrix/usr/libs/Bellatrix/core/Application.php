@@ -24,6 +24,7 @@
 require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Command', 'Target.php')));
 require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Exception', 'Command.php')));
 require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Message', 'Response.php')));
+require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_CORE, 'Mode', 'Server.php')));
 
 class Btrx_Application 
     extends Btrx_Command_TargetAbstract
@@ -87,10 +88,23 @@ class Btrx_Application
             // Create singleton
             //
             self::$App = new Btrx_Application();
+            
+            //
+            // Link to next target in CoR (Server)
+            //
+            try {
+                Btrx_Mode_Server::wakeup(NULL)->link(self::$App);
+                
+            } catch (Btrx_Exception $e) {
+                //
+                // @todo: This should be fatal but perhaps a bit more elegant.
+                //
+                die("Bellatrix failed to boot because application could not link to server mode.");
+            }
                         
             // @todo:
             // try {
-            //   Btrx_Mode_Server::wakeup(NULL)->link(self::$App);
+            //   
             //   if successful subordinate mode will call parent::setSubordinate(self)
             // }
             // catch (Btrx_Exception) {...}

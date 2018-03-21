@@ -27,14 +27,8 @@ require_once(implode(DIRECTORY_SEPARATOR, array(BTRX_INCLUDE, 'Exception', 'Stat
 require_once(BTRX_CORE . DIRECTORY_SEPARATOR . 'Exception.php');
 
 class Btrx_Exception_Command 
-extends Btrx_ExceptionAbstract 
+extends Btrx_Exception 
     implements Btrx_Exception_CommandInterface
 {
-    //
-    // Implement Btrx_Exception_Interface
-    //
-    public static function recover(Exception $Exception) {
-        return parent::recover($Exception);
-    }
 }
 
